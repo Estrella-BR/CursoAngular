@@ -24,7 +24,7 @@ export class LoanListComponent implements OnInit {
     totalElements: number = 0;
 
     dataSource = new MatTableDataSource<Loan>();
-    displayedColumns: string[] = ['id', 'beginDate', 'endDate'];
+    displayedColumns: string[] = ['id', 'beginDate', 'endDate', 'game','client'];
 
     constructor(private loanService: LoanService, public dialog: MatDialog) {}
 

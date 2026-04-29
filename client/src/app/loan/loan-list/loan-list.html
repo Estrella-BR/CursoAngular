@@ -17,6 +17,16 @@
             <mat-cell *matCellDef="let element"> {{element.endDate | date:'dd/MM/yyyy'}} </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="game">
+            <mat-header-cell *matHeaderCellDef> Juego </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.game.title}} </mat-cell>
+        </ng-container>
+
+         <ng-container matColumnDef="client">
+            <mat-header-cell *matHeaderCellDef> Cliente </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.client.name}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let element">

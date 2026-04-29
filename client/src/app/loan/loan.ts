@@ -4,6 +4,8 @@ import { Pageable } from '../core/model/page/Pageable';
 import { Loan } from './model/Loan';
 import { LoanPage } from './model/LoanPage';
 import { HttpClient } from '@angular/common/http';
+import { Client } from '../client/model/Client';
+import { Game } from '../game/model/Game';
 
 
 @Injectable({
@@ -14,7 +16,7 @@ export class LoanService {
 
      private baseUrl = 'http://localhost:8080/loan';
 
-    getLoans(pageable: Pageable): Observable<LoanPage> {
+    getLoans(pageable: Pageable, client? : Client, game? : Game): Observable<LoanPage> {
       return this.http.post<LoanPage>(this.baseUrl, { pageable: pageable });
 
     }
