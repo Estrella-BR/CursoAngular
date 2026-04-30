@@ -10,11 +10,28 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LoanEditComponent } from '../loan-edit/loan-edit';
 import { LoanService } from '../loan';
+import { MatFormField } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { Client } from '../../client/model/Client';
+import { Game } from '../../game/model/Game';
+import { ClientService } from '../../client/client';
+import { GameService } from '../../game/game';
 
 @Component({
     selector: 'app-loan-list',
     standalone: true,
-    imports: [MatButtonModule, MatIconModule, MatTableModule, CommonModule, MatPaginator],
+    imports: [
+        MatIconModule,
+        MatTableModule,
+        MatPaginator,
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,],
     templateUrl: './loan-list.html',
     styleUrl: './loan-list.scss',
 })
@@ -23,13 +40,27 @@ export class LoanListComponent implements OnInit {
     pageSize: number = 5;
     totalElements: number = 0;
 
+    loans: Loan[] = [];
+    clients: Client[] = [];
+    games: Game[] = [];
+    filterClient: Client = new Client();
+    filterGame: Game = new Game();
+
     dataSource = new MatTableDataSource<Loan>();
     displayedColumns: string[] = ['id', 'beginDate', 'endDate', 'game','client'];
 
-    constructor(private loanService: LoanService, public dialog: MatDialog) {}
+    constructor(private loanService: LoanService, public dialog: MatDialog, private clientService: ClientService, private gameService: GameService) {}
 
     ngOnInit(): void {
         this.loadPage();
+
+        this.clientService
+            .getClients()
+            .subscribe((clients) => (this.clients = clients));
+
+        this.gameService
+            .getGames()
+            .subscribe((games) => (this.games = games));
     }
 
     loadPage(event?: PageEvent) {
@@ -93,5 +124,41 @@ export class LoanListComponent implements OnInit {
                 });
             }
         });
+    }
+
+    onCleanFilter(): void {
+            this.filterGame = new Game();
+            this.filterClient = new Client();
+            this.onSearch();
+    }
+
+    onSearch(event?: PageEvent): void {
+        const client = this.filterClient.id ? this.filterClient : undefined;
+        const game = this.filterGame.id ? this.filterGame : undefined;
+
+        const pageable: Pageable = {
+            pageNumber: this.pageNumber,
+            pageSize: this.pageSize,
+            sort: [
+                {
+                    property: 'id',
+                    direction: 'ASC',
+                },
+            ],
+        };
+
+        if (event != null) {
+            pageable.pageSize = event.pageSize;
+            pageable.pageNumber = event.pageIndex;
+        }
+
+        this.loanService
+            .getLoans(pageable, client, game)
+            .subscribe((data) => {
+                this.dataSource.data = data.content;
+                this.pageNumber = data.pageable.pageNumber;
+                this.pageSize = data.pageable.pageSize;
+                this.totalElements = data.totalElements;
+            });
     }
 }
