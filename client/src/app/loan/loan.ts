@@ -16,7 +16,7 @@ export class LoanService {
 
      private baseUrl = 'http://localhost:8080/loan';
 
-    getLoans(pageable: Pageable, client?: Client, game?: Game): Observable<LoanPage> {
+    getLoans(pageable: Pageable, client?: Client, game?: Game, date?: Date): Observable<LoanPage> {
         let params = new URLSearchParams();
 
         if (client?.id) {
@@ -25,6 +25,10 @@ export class LoanService {
 
         if (game?.id) {
             params.set('idGame', game.id.toString());
+        }
+
+        if (date) {
+            params.set('date', date.toISOString().split('T')[0]);
         }
 
         // Agregar parámetros de paginación

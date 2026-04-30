@@ -18,6 +18,9 @@ import { Client } from '../../client/model/Client';
 import { Game } from '../../game/model/Game';
 import { ClientService } from '../../client/client';
 import { GameService } from '../../game/game';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+
 
 @Component({
     selector: 'app-loan-list',
@@ -32,9 +35,13 @@ import { GameService } from '../../game/game';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+
 ],
     templateUrl: './loan-list.html',
     styleUrls: ['./loan-list.scss'],
+    providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' }],
 })
 export class LoanListComponent implements OnInit {
     pageNumber: number = 0;
@@ -46,9 +53,10 @@ export class LoanListComponent implements OnInit {
     games: Game[] = [];
     filterClient: Client = new Client();
     filterGame: Game = new Game();
+    filterDate?: Date;
 
     dataSource = new MatTableDataSource<Loan>();
-    displayedColumns: string[] = ['id', 'beginDate', 'endDate', 'game', 'client', 'action'];
+    displayedColumns: string[] = ['id', 'beginDate', 'endDate', 'game', 'client'];
 
     constructor(private loanService: LoanService, public dialog: MatDialog, private clientService: ClientService, private gameService: GameService) {}
 
@@ -81,7 +89,10 @@ export class LoanListComponent implements OnInit {
             pageable.pageNumber = event.pageIndex;
         }
 
-        this.loanService.getLoans(pageable).subscribe((data) => {
+        const client = this.filterClient.id ? this.filterClient : undefined;
+        const game = this.filterGame.id ? this.filterGame : undefined;
+
+        this.loanService.getLoans(pageable, client, game, this.filterDate).subscribe((data) => {
             this.dataSource.data = data.content;
             this.pageNumber = data.pageable.pageNumber;
             this.pageSize = data.pageable.pageSize;
@@ -130,6 +141,7 @@ export class LoanListComponent implements OnInit {
     onCleanFilter(): void {
             this.filterGame = new Game();
             this.filterClient = new Client();
+            this.filterDate = undefined;
             this.onSearch();
     }
 
@@ -154,7 +166,7 @@ export class LoanListComponent implements OnInit {
         }
 
         this.loanService
-            .getLoans(pageable, client, game)
+            .getLoans(pageable, client, game, this.filterDate)
             .subscribe((data) => {
                 this.dataSource.data = data.content;
                 this.pageNumber = data.pageable.pageNumber;
