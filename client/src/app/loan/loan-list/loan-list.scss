@@ -1,47 +1,6 @@
 .container {
     margin: 20px;
 
-    mat-table {
-        margin-top: 10px;
-        margin-bottom: 20px;
-
-        .mat-header-row {
-            background-color:#f5f5f5;
-
-            .mat-header-cell {
-                text-transform: uppercase;
-                font-weight: bold;
-                color: #838383;
-            }
-        }
-
-        .mat-column-id {
-            flex: 0 0 20%;
-            justify-content: center;
-        }
-
-        .mat-column-action {
-            flex: 0 0 10%;
-            justify-content: center;
-        }
-    }
-    .buttons {
-        text-align: right;
-    }
-
-    .loan-list {
-        margin-top: 20px;
-        margin-bottom: 20px;
-
-        display: flex;
-        flex-flow: wrap;
-        overflow: auto;
-    }
-
-}
-.container {
-    margin: 20px;
-
     .filters {
         display: flex;
 
@@ -60,20 +19,11 @@
         }
     }
 
-    .game-list {
-        margin-top: 20px;
-        margin-bottom: 20px;
-
-        display: flex;
-        flex-flow: wrap;
-        overflow: auto;
-    }
-
     .buttons {
         text-align: right;
     }
-}
+  }
 
-button {
+  button {
     width: 125px;
 }

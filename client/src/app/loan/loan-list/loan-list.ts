@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Loan } from '../model/Loan';
 import { Pageable } from '../../core/model/page/Pageable';
@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LoanEditComponent } from '../loan-edit/loan-edit';
 import { LoanService } from '../loan';
-import { MatFormField } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -24,16 +23,18 @@ import { GameService } from '../../game/game';
     selector: 'app-loan-list',
     standalone: true,
     imports: [
-        MatIconModule,
-        MatTableModule,
-        MatPaginator,
-        CommonModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,],
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+],
     templateUrl: './loan-list.html',
-    styleUrl: './loan-list.scss',
+    styleUrls: ['./loan-list.scss'],
 })
 export class LoanListComponent implements OnInit {
     pageNumber: number = 0;
@@ -47,7 +48,7 @@ export class LoanListComponent implements OnInit {
     filterGame: Game = new Game();
 
     dataSource = new MatTableDataSource<Loan>();
-    displayedColumns: string[] = ['id', 'beginDate', 'endDate', 'game','client'];
+    displayedColumns: string[] = ['id', 'beginDate', 'endDate', 'game', 'client', 'action'];
 
     constructor(private loanService: LoanService, public dialog: MatDialog, private clientService: ClientService, private gameService: GameService) {}
 

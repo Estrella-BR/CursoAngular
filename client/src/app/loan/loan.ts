@@ -16,9 +16,29 @@ export class LoanService {
 
      private baseUrl = 'http://localhost:8080/loan';
 
-    getLoans(pageable: Pageable, client? : Client, game? : Game): Observable<LoanPage> {
-      return this.http.post<LoanPage>(this.baseUrl, { pageable: pageable });
+    getLoans(pageable: Pageable, client?: Client, game?: Game): Observable<LoanPage> {
+        let params = new URLSearchParams();
 
+        if (client?.id) {
+            params.set('idClient', client.id.toString());
+        }
+
+        if (game?.id) {
+            params.set('idGame', game.id.toString());
+        }
+
+        // Agregar parámetros de paginación
+        params.set('page', pageable.pageNumber?.toString() || '0');
+        params.set('size', pageable.pageSize?.toString() || '20');
+        if (pageable.sort && pageable.sort.length > 0) {
+            const sortParams = pageable.sort.map(s => `${s.property},${s.direction}`).join('&sort=');
+            params.set('sort', sortParams);
+        }
+
+        const queryString = params.toString();
+        const url = queryString ? `${this.baseUrl}?${queryString}` : this.baseUrl;
+
+        return this.http.get<LoanPage>(url);
     }
 
     saveLoan(loan: Loan): Observable<Loan> {
