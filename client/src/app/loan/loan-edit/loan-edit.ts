@@ -23,6 +23,7 @@ export class LoanEditComponent implements OnInit {
     loan: Loan = new Loan();
     clients: Client[] = [];
     games: Game[] = [];
+    errorMessage: string = '';
 
     constructor(
         public dialogRef: MatDialogRef<LoanEditComponent>,
@@ -63,6 +64,12 @@ export class LoanEditComponent implements OnInit {
     }
 
     onSave() {
+        this.errorMessage = '';
+        if (this.isEndDateBeforeBeginDate()) {
+            this.errorMessage = 'La fecha de fin no puede ser anterior a la fecha de inicio.';
+            return;
+        }
+
         this.loanService.saveLoan(this.loan).subscribe(() => {
             this.dialogRef.close();
         });
@@ -70,5 +77,19 @@ export class LoanEditComponent implements OnInit {
 
     onClose() {
         this.dialogRef.close();
+    }
+
+    private parseDate(value: Date | string | undefined | null): Date | null {
+        if (value == null || value === '') {
+            return null;
+        }
+        const date = value instanceof Date ? value : new Date(value);
+        return isNaN(date.getTime()) ? null : date;
+    }
+
+    private isEndDateBeforeBeginDate(): boolean {
+        const begin = this.parseDate(this.loan.beginDate);
+        const end = this.parseDate(this.loan.endDate);
+        return begin !== null && end !== null && end < begin;
     }
 }

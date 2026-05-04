@@ -21,6 +21,7 @@
             <mat-label>Fecha de fin</mat-label>
             <input type="date" matInput [(ngModel)]="loan.endDate" name="endDate" required>
             <mat-error>La fecha de fin no puede estar vacía</mat-error>
+
         </mat-form-field>
 
         <mat-form-field>
@@ -43,6 +44,7 @@
             <mat-error>El cliente no puede estar vacío</mat-error>
         </mat-form-field>
     </form>
+    @if (errorMessage) { <mat-error>{{ errorMessage }}</mat-error> }
 
     <div class="buttons">
         <button mat-stroked-button (click)="onClose()">Cerrar</button>
