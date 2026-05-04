@@ -24,6 +24,7 @@ export class LoanEditComponent implements OnInit {
     clients: Client[] = [];
     games: Game[] = [];
     errorMessage: string = '';
+    serverErrorMessage: string = '';
 
     constructor(
         public dialogRef: MatDialogRef<LoanEditComponent>,
@@ -65,13 +66,20 @@ export class LoanEditComponent implements OnInit {
 
     onSave() {
         this.errorMessage = '';
+        this.serverErrorMessage = '';
         if (this.isEndDateBeforeBeginDate()) {
             this.errorMessage = 'La fecha de fin no puede ser anterior a la fecha de inicio.';
             return;
         }
 
-        this.loanService.saveLoan(this.loan).subscribe(() => {
-            this.dialogRef.close();
+        this.loanService.saveLoan(this.loan).subscribe({
+            next: () => {
+                this.dialogRef.close();
+            },
+            error: (error) => {
+                this.serverErrorMessage = 'Error al guardar el préstamo. Comprueba que los datos sean correctos.';
+                console.error('Error saving loan:', error);
+            }
         });
     }
 

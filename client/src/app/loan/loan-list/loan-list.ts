@@ -56,7 +56,7 @@ export class LoanListComponent implements OnInit {
     filterDate?: Date;
 
     dataSource = new MatTableDataSource<Loan>();
-    displayedColumns: string[] = ['id', 'beginDate', 'endDate', 'game', 'client'];
+    displayedColumns: string[] = ['id', 'beginDate', 'endDate', 'game', 'client', 'action'];
 
     constructor(private loanService: LoanService, public dialog: MatDialog, private clientService: ClientService, private gameService: GameService) {}
 

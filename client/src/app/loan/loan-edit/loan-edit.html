@@ -45,6 +45,7 @@
         </mat-form-field>
     </form>
     @if (errorMessage) { <mat-error>{{ errorMessage }}</mat-error> }
+    @if (serverErrorMessage) { <mat-error>{{ serverErrorMessage }}</mat-error> }
 
     <div class="buttons">
         <button mat-stroked-button (click)="onClose()">Cerrar</button>

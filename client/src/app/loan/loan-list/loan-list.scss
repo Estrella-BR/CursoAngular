@@ -5,7 +5,7 @@
         display: flex;
 
         mat-form-field {
-            width: 300px;
+            width: 250px;
             margin-right: 20px;
         }
 
@@ -15,6 +15,7 @@
 
             button {
                 margin-left: 15px;
+                width: 150px;
             }
         }
     }
@@ -25,5 +26,5 @@
   }
 
   button {
-    width: 125px;
+    width: 80px;
 }
