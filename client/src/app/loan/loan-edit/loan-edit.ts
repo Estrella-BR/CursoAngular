@@ -98,6 +98,8 @@ export class LoanEditComponent implements OnInit {
     private isEndDateBeforeBeginDate(): boolean {
         const begin = this.parseDate(this.loan.beginDate);
         const end = this.parseDate(this.loan.endDate);
+
         return begin !== null && end !== null && end < begin;
     }
+
 }

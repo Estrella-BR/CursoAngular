@@ -28,7 +28,8 @@ export class LoanService {
         }
 
         if (date) {
-            params.set('date', date.toISOString().split('T')[0]);
+          const fecha = new Date(date)
+            params.set('date', fecha.toISOString());
         }
 
         // Agregar parámetros de paginación
